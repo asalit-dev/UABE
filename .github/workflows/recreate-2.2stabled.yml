@@ -1,0 +1,50 @@
+name: Recreate UABE 2.2 stable d
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to build
+        required: true
+        default: recreate-2.2stabled
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build recreated UABE Windows 32-bit
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout requested ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Configure MSVC x86 environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+
+      - name: Configure CMake
+        run: >-
+          cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
+          -DUABE_BUILD_AUDIOCLIP=OFF
+          -DUABE_BUILD_TEXTOOLWRAP=OFF
+
+      - name: Build all available targets
+        run: cmake --build build --config Release --parallel
+
+      - name: Package build output
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifact | Out-Null
+          Copy-Item build/bin/* artifact/ -Recurse -Force
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UABE-recreated-2.2stabled-x86
+          path: artifact
