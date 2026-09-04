@@ -1,5 +1,7 @@
 add_subdirectory (Utility)
 add_subdirectory (TextAsset)
-add_subdirectory (AudioClip)
+if (UABE_BUILD_AUDIOCLIP)
+    add_subdirectory (AudioClip)
+endif()
 add_subdirectory (Texture)
 add_subdirectory (Mesh)
