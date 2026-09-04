@@ -683,8 +683,12 @@ void AssetExportJSONDumpTask::recursiveDumpAsset(IAssetsReader* pReader, AssetTy
 							break;
 			default:
 				if (strValue[i] < 0x20)
-					std::format_to(std::back_inserter(lineBuf), "\\u{:04u}",
+				{
+					char unicodeEscape[7];
+					sprintf_s(unicodeEscape, "\\u%04u",
 						static_cast<unsigned int>(static_cast<unsigned char>(strValue[i])));
+					lineBuf.assign(unicodeEscape);
+				}
 							break;
 						}
 						if (!lineBuf.empty())
