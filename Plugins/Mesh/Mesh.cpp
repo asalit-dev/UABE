@@ -805,9 +805,9 @@ public:
 								//always switch the winding
 								for (int i = 0; i < 3; i++)
 								{
-									if (uvCount > 0 && hasNormals)
+									if (pUVChannel && hasNormals)
 										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[i], triIndices[i], triIndices[i]);
-									else if (uvCount > 0)
+									else if (pUVChannel)
 										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[i], triIndices[i]);
 									else if (hasNormals)
 										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[i], triIndices[i]);
@@ -821,9 +821,9 @@ public:
 							{
 								for (int i = 2; i >= 0; i--)
 								{
-									if (uvCount > 0 && hasNormals)
+									if (pUVChannel && hasNormals)
 										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[i], triIndices[i], triIndices[i]);
-									else if (uvCount > 0)
+									else if (pUVChannel)
 										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[i], triIndices[i]);
 									else if (hasNormals)
 										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[i], triIndices[i]);
