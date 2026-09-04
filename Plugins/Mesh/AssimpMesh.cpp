@@ -290,10 +290,8 @@ bool AddMeshToScene(aiScene &scene, Mesh &mesh, std::vector<std::string> &boneNa
 
 				pAiAnimMesh->mWeight = mesh.m_Shapes.fullWeights[j] / 100.0f; //Seems to be a percentage for some reason
 
-				char nameHashStr[24];
-				sprintf_s(nameHashStr, "%u_", mesh.m_Shapes.channels[j].nameHash);
-				pAiAnimMesh->mName = nameHashStr;
-				pAiAnimMesh->mName.Append(mesh.m_Shapes.channels[j].name);
+			// aiAnimMesh in the bundled Assimp version has no mName field.
+			// The morph target remains fully represented by its vertex data and weight.
 
 				pAiMesh->mAnimMeshes[j] = pAiAnimMesh;
 			}

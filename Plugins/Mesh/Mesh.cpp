@@ -626,7 +626,7 @@ public:
 
 				//Contains the normals data without sign bit (the bit vectors are unsigned);
 				//The m_NormalSigns value has the sign bit of the third component, z.
-				//The length of the normal vector |v| = sqrt(x²+y²+z²) = 1²; z is not stored, so z = sqrt(1²-x²-y²).
+				//The length of the normal vector |v| = sqrt(xï¿½+yï¿½+zï¿½) = 1ï¿½; z is not stored, so z = sqrt(1ï¿½-xï¿½-yï¿½).
 				if (mesh.m_CompressedMesh.m_Normals.m_NumItems)
 					bitsPerVertex += mesh.m_CompressedMesh.m_Normals.m_BitSize *
 					(mesh.m_CompressedMesh.m_Normals.m_NumItems / totalVertexCount); //shuold be m_BitSize*2
@@ -800,21 +800,35 @@ public:
 
 					if (curIndexCount == 3)
 					{
-						if (subMesh.topology && (i & 1))
-						{
-							//always switch the winding
-							for (int i = 0; i < 3; i++)
+							if (subMesh.topology && (i & 1))
 							{
-								std::format_to(std::back_inserter(formatTmp), faceFormat, triIndices[i], triIndices[i], triIndices[i]);
+								//always switch the winding
+								for (int i = 0; i < 3; i++)
+								{
+									if (uvCount > 0 && hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[i], triIndices[i], triIndices[i]);
+									else if (uvCount > 0)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[i], triIndices[i]);
+									else if (hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[i], triIndices[i]);
+									else
+										std::format_to(std::back_inserter(formatTmp), " {}", triIndices[i]);
 								_writerputs(formatTmp);
 								formatTmp.clear();
 							}
 						}
-						else
-						{
-							for (int i = 2; i >= 0; i--)
+							else
 							{
-								std::format_to(std::back_inserter(formatTmp), faceFormat, triIndices[i], triIndices[i], triIndices[i]);
+								for (int i = 2; i >= 0; i--)
+								{
+									if (uvCount > 0 && hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[i], triIndices[i], triIndices[i]);
+									else if (uvCount > 0)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[i], triIndices[i]);
+									else if (hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[i], triIndices[i]);
+									else
+										std::format_to(std::back_inserter(formatTmp), " {}", triIndices[i]);
 								_writerputs(formatTmp);
 								formatTmp.clear();
 							}
@@ -976,21 +990,35 @@ public:
 
 					if (curIndexCount == 3)
 					{
-						if (subMesh.topology && (j & 1))
-						{
-							//always switch the winding
-							for (int k = 0; k < 3; k++)
+							if (subMesh.topology && (j & 1))
 							{
-								std::format_to(std::back_inserter(formatTmp), faceFormat, triIndices[k], triIndices[k], triIndices[k]);
+								//always switch the winding
+								for (int k = 0; k < 3; k++)
+								{
+									if (uvCount > 0 && hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[k], triIndices[k], triIndices[k]);
+									else if (uvCount > 0)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[k], triIndices[k]);
+									else if (hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[k], triIndices[k]);
+									else
+										std::format_to(std::back_inserter(formatTmp), " {}", triIndices[k]);
 								_writerputs(formatTmp);
 								formatTmp.clear();
 							}
 						}
-						else
-						{
-							for (int k = 2; k >= 0; k--)
+							else
 							{
-								std::format_to(std::back_inserter(formatTmp), faceFormat, triIndices[k], triIndices[k], triIndices[k]);
+								for (int k = 2; k >= 0; k--)
+								{
+									if (uvCount > 0 && hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}/{}", triIndices[k], triIndices[k], triIndices[k]);
+									else if (uvCount > 0)
+										std::format_to(std::back_inserter(formatTmp), " {}/{}", triIndices[k], triIndices[k]);
+									else if (hasNormals)
+										std::format_to(std::back_inserter(formatTmp), " {}//{}", triIndices[k], triIndices[k]);
+									else
+										std::format_to(std::back_inserter(formatTmp), " {}", triIndices[k]);
 								_writerputs(formatTmp);
 								formatTmp.clear();
 							}
@@ -1167,4 +1195,3 @@ IPluginDesc* GetUABEPluginDesc1(size_t sizeof_AppContext, size_t sizeof_BundleFi
 	}
 	return new MeshPluginDesc();
 }
-
