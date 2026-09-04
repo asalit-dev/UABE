@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Win32TaskStatusTracker.h"
 #include <array>
+#include <format>
 #include "resource.h"
 #include <windowsx.h>
 #include "../libStringConverter/convert.h"
