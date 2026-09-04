@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <exception>
 #include <functional>
+#include <optional>
 
 struct AssetUtilDesc
 {
@@ -305,4 +306,3 @@ public:
 	UABE_Generic_API void parseJSONDump(IAssetsReader* pDumpReader, IAssetsWriter* pWriter);
 	UABE_Generic_API void parseDump(IAssetsReader* pDumpReader, IAssetsWriter* pWriter);
 };
-
