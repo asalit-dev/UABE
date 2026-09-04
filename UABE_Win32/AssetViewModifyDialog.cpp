@@ -8,6 +8,7 @@
 #include "MonoBehaviourManager.h"
 #include "Win32PluginManager.h"
 #include <string>
+#include <format>
 #include <WindowsX.h>
 
 class AssetInstanceTask : public ITask
