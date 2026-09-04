@@ -26,11 +26,9 @@ jobs:
       - name: Configure CMake
         run: >-
           cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
-          -DUABE_BUILD_AUDIOCLIP=OFF
-          -DUABE_BUILD_TEXTOOLWRAP=OFF
 
-      - name: Build
-        run: cmake --build build --config Release --target AssetBundleExtractor --parallel
+      - name: Build all UABE targets
+        run: cmake --build build --config Release --parallel
 
       - name: Package build output
         shell: pwsh
