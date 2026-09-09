@@ -3,6 +3,11 @@ project (AssetBundleExtractor)
 set(UABE_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 option(UABE_BUILD_TEXTOOLWRAP "Build the PVRTexTool wrapper" ON)
 option(UABE_BUILD_AUDIOCLIP "Build the FMOD AudioClip plugin" ON)
+option(UABE_STATIC_MSVC_RUNTIME "Link the MSVC runtime statically" ON)
+
+if (MSVC AND UABE_STATIC_MSVC_RUNTIME)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
 
 #set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
