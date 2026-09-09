@@ -1,0 +1,51 @@
+name: Official UABE 2.2 stable d (Windows x86)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package official 2.2 stable d x86
+    runs-on: windows-2022
+    steps:
+      - name: Download official release
+        shell: pwsh
+        run: |
+          $url = "https://github.com/SeriousCache/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_32bit.zip"
+          Invoke-WebRequest -Uri $url -OutFile stable-d.zip
+
+      - name: Verify archive
+        shell: pwsh
+        run: |
+          $expected = "0ac09af0774dfebe183aa9de43fe682a80a397477a490c82b7304f5c7153f1ff"
+          $actual = (Get-FileHash stable-d.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) {
+            throw "Unexpected release archive SHA256: $actual"
+          }
+
+      - name: Extract package
+        shell: pwsh
+        run: Expand-Archive -Path stable-d.zip -DestinationPath stable-d
+
+      - name: Upload official x86 package
+        uses: actions/upload-artifact@v4
+        with:
+          name: UABE-2.2-stable-d-windows-x86
+          path: stable-d
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Print package contents
+        shell: pwsh
+        run: Get-ChildItem -Recurse stable-d | Select-Object FullName,Length
+
+      - name: Print provenance
+        shell: pwsh
+        run: |
+          "Source: https://github.com/SeriousCache/UABE/releases/tag/2.2stabled"
+          "Architecture: Windows 32-bit (x86)"
+          "This job packages the official release; it does not rebuild unavailable historical source."
+          "SHA256 (archive): $((Get-FileHash stable-d.zip -Algorithm SHA256).Hash.ToLowerInvariant())"
